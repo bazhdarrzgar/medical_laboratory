@@ -1,26 +1,150 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-scale: 1;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  --color-brand: #0284c7;
+  --color-brand-hover: #0369a1;
+  --color-brand-muted: rgba(2, 132, 199, 0.1);
+  --font-en: var(--font-en);
+  --font-ku: var(--font-ku);
+  --font-ar: var(--font-ar);
+
+  /* Scale text utilities using the CSS variable */
+  --text-xs: calc(0.75rem * var(--font-scale));
+  --text-sm: calc(0.875rem * var(--font-scale));
+  --text-base: calc(1rem * var(--font-scale));
+  --text-lg: calc(1.125rem * var(--font-scale));
+  --text-xl: calc(1.25rem * var(--font-scale));
+  --text-2xl: calc(1.5rem * var(--font-scale));
+  --text-3xl: calc(1.875rem * var(--font-scale));
+  --text-4xl: calc(2.25rem * var(--font-scale));
+
+  /* Map the custom rem values used in the project to scaled utilities */
+  --text-tiny: calc(0.5625rem * var(--font-scale));
+  --text-smaller: calc(0.625rem * var(--font-scale));
+  --text-smallish: calc(0.6875rem * var(--font-scale));
+  --text-regular-sm: calc(0.75rem * var(--font-scale));
+  --text-intermediate: calc(0.8125rem * var(--font-scale));
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --popover: #ffffff;
+    --popover-foreground: #0f172a;
+    --primary: #0284c7;
+    --primary-foreground: #ffffff;
+    --secondary: #f1f5f9;
+    --secondary-foreground: #0f172a;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --accent: #f1f5f9;
+    --accent-foreground: #0f172a;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: #0284c7;
+  }
+
+  .dark {
+    --background: #09090b;
+    --foreground: #f8fafc;
+    --card: #18181b;
+    --card-foreground: #f8fafc;
+    --popover: #18181b;
+    --popover-foreground: #f8fafc;
+    --primary: #38bdf8;
+    --primary-foreground: #ffffff;
+    --secondary: #27272a;
+    --secondary-foreground: #f8fafc;
+    --muted: #27272a;
+    --muted-foreground: #a1a1aa;
+    --accent: #27272a;
+    --accent-foreground: #f8fafc;
+    --border: #27272a;
+    --input: #27272a;
+    --ring: #0284c7;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    /* Default font */
+    font-family: var(--font-en), system-ui, sans-serif;
+    font-size: calc(1rem * var(--font-scale));
+  }
+
+  /* Language specific fonts */
+  [lang="en"] {
+    font-family: var(--font-en), system-ui, sans-serif;
+  }
+
+  [lang="ku"] {
+    font-family: var(--font-ku), "Inter", sans-serif;
+  }
+
+  [lang="ar"] {
+    font-family: var(--font-ar), "Inter", sans-serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 20px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
+
+/* ── Dark mode: native <select> & <option> fix ─────────────────────────────
+   Browsers ignore className on <option> elements, so we must use real CSS.
+   This ensures the dropdown popup is readable in dark mode.               */
+.dark select {
+  background-color: #18181b;
+  /* --card */
+  color: #f8fafc;
+  /* --foreground */
+  color-scheme: dark;
+}
+
+.dark select option {
+  background-color: #18181b;
+  /* --card */
+  color: #f8fafc;
+  /* --foreground */
 }

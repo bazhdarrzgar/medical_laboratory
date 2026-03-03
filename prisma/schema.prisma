@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Patient {
+  id          String       @id @default(cuid())
+  fullName    String
+  gender      String
+  mobile      String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  address     String?
+  dob         String?
+  testRecords TestRecord[]
+}
+
+model Category {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+  tests       Test[]
+}
+
+model Doctor {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  testRecords TestRecord[]
+}
+
+model Test {
+  id          String       @id @default(cuid())
+  name        String
+  categoryId  String
+  normalRange String?
+  unit        String?
+  price       Float?       @default(0)
+  category    Category     @relation(fields: [categoryId], references: [id])
+  testResults TestResult[]
+}
+
+model TestRecord {
+  id        String       @id @default(cuid())
+  patientId String
+  doctorId  String?
+  date      DateTime     @default(now())
+  doctor    Doctor?      @relation(fields: [doctorId], references: [id])
+  patient   Patient      @relation(fields: [patientId], references: [id])
+  results   TestResult[]
+}
+
+model TestResult {
+  id           String     @id @default(cuid())
+  testRecordId String
+  testId       String
+  value        String
+  test         Test       @relation(fields: [testId], references: [id])
+  testRecord   TestRecord @relation(fields: [testRecordId], references: [id])
+}
